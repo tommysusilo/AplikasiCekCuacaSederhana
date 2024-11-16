@@ -5,6 +5,17 @@
  */
 package aplikasicekcuacasederhana;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  *
  * @author Win 10
@@ -16,6 +27,12 @@ public class JFrameAplikasiCekCuacaSederhana extends javax.swing.JFrame {
      */
     public JFrameAplikasiCekCuacaSederhana() {
         initComponents();
+        
+       
+        btncek.addActionListener((ActionEvent e) -> {
+            String lokasi = (String) cblokasi.getSelectedItem();
+            fetchWeatherData(lokasi);
+        });
     }
 
     /**
@@ -27,21 +44,102 @@ public class JFrameAplikasiCekCuacaSederhana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        cblokasi = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        lblCuaca = new javax.swing.JTextField();
+        lblGambar = new javax.swing.JLabel();
+        btncek = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        cblokasi.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Banjarmasin", "Pelaihari", "Banjarbaru", "Jakarta" }));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Pilih Lokasi ");
+
+        btncek.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btncek.setText("CEK CUACA");
+        btncek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncekActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblCuaca)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cblokasi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(77, 77, 77)
+                                .addComponent(lblGambar, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(btncek, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cblokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblCuaca, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblGambar, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btncek, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setText("APLIKASI CEK CUACA SEDERHANA ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(112, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(107, 107, 107))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(22, 22, 22))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btncekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncekActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btncekActionPerformed
 
     /**
      * @param args the command line arguments
@@ -77,7 +175,58 @@ public class JFrameAplikasiCekCuacaSederhana extends javax.swing.JFrame {
             }
         });
     }
+    
+     private void fetchWeatherData(String lokasi) {
+        try {
+            // API Key and URL for OpenWeatherMap
+            String apiKey = "97ed86b99fdcf738c7a080e0fa9fde20"; // Ganti dengan API key Anda
+            String urlString = "https://api.openweathermap.org/data/2.5/weather?q=" + lokasi + "&appid=" + apiKey + "&units=metric&lang=id";
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+
+            // Reading the response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            // Parsing the JSON response
+            JSONObject jsonResponse = new JSONObject(response.toString());
+            JSONObject main = jsonResponse.getJSONObject("main");
+            JSONArray weatherArray = jsonResponse.getJSONArray("weather");
+            JSONObject weather = weatherArray.getJSONObject(0);
+
+            // Extracting data
+            double temperature = main.getDouble("temp");
+            String description = weather.getString("description");
+            String icon = weather.getString("icon");
+
+          
+            lblCuaca.setText("Cuaca di " +lokasi+ " Sedang " + description);
+
+            // Display corresponding weather image based on the icon
+            String iconUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+            ImageIcon weatherImage = new ImageIcon(new URL(iconUrl));
+            lblGambar.setIcon(weatherImage);
+
+        } catch (Exception e) {
+            
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btncek;
+    private javax.swing.JComboBox<String> cblokasi;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField lblCuaca;
+    private javax.swing.JLabel lblGambar;
     // End of variables declaration//GEN-END:variables
 }
